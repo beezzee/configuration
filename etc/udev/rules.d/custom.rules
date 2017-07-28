@@ -1,0 +1,6 @@
+SUBSYSTEM=="block",  ATTRS{ID_FS_LABEL}=="HUK_COBURG", SYMLINK+="secret"
+ATTR{partition}=="1",SUBSYSTEMS=="usb",DRIVERS=="usb",ATTRS{serial}=="20100628003C5",SYMLINK+="usb_backup",GROUP="disk",MODE="0660"
+ATTR{partition}=="1",SUBSYSTEMS=="usb",DRIVERS=="usb",ATTRS{serial}=="574343344D3553485453374E",SYMLINK+="wd_elements_2TB",GROUP="disk",MODE="0660"
+ATTR{partition}=="5",SUBSYSTEMS=="usb",DRIVERS=="usb",ATTRS{serial}=="57434156354E323039313433",SYMLINK+="usb_wd",GROUP="disk",MODE="0660"
+ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", GROUP="plugdev", MODE="0660", SYMLINK+="atmel_mk2" # JTAG ICE mkII
+
