@@ -1,0 +1,9 @@
+[user]
+	email = mail@peter-guenther.de
+	name = Peter Günther
+[push]
+	default = simple
+
+[core]
+	editor = emacs -nw
+	excludesfile = /home/peter/.gitignore
