@@ -15,7 +15,8 @@ f () {
 trap f ERR
 
 MNT_DIR=/mnt/backup
-BACKUP_DIR=${MNT_DIR}/linux_lab
+HOST=`hostname`
+BACKUP_DIR=${MNT_DIR}/${HOST}
 DPKG_BACKUP_DIR=/root/dpkg
 DATESTRING="+%F_%H-%M-%S"
 #SRC="/etc /home  /var /root /mnt/daten"
@@ -46,6 +47,13 @@ else
 	exit 1
     fi
     DO_UMOUNT=1
+fi
+
+if [[ -d ${BACKUP_DIR} ]]; then
+    echo "${BACKUP_DIR} exists"
+else 
+    echo "${BACKUP_DIR} does not exist. Create..."
+    mkdir ${BACKUP_DIR}
 fi
 
 echo "clean apt cache..."
