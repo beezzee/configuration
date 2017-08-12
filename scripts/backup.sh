@@ -16,17 +16,18 @@ trap f ERR
 
 MNT_DIR=/mnt/backup
 HOST=`hostname`
-BACKUP_DIR=${MNT_DIR}/${HOST}
-DPKG_BACKUP_DIR=/root/dpkg
+BACKUP_DIR=${MNT_DIR}/backup/rsync/${HOST}
+DPKG_BACKUP_DIR=/root
 DATESTRING="+%F_%H-%M-%S"
 #SRC="/etc /home  /var /root /mnt/daten"
-SRC="/etc /home  /var /root"
+SRC="/etc /home /var /root"
 #SRC="/etc"
 
 #RSYNC_OPTIONS="--archive  --relative --delete --ignore-existing "
 RSYNC_OPTIONS="--archive  --delete --ignore-existing "
 
 #use for NTFS to avoid copying for ownership simulation
+#TODO: remove or automatic check for FS type
 RSYNC_OPTIONS=${RSYNC_OPTIONS}" --no-perms --no-owner --no-group"
 
 
@@ -53,7 +54,7 @@ if [[ -d ${BACKUP_DIR} ]]; then
     echo "${BACKUP_DIR} exists"
 else 
     echo "${BACKUP_DIR} does not exist. Create..."
-    mkdir ${BACKUP_DIR}
+    mkdir -p ${BACKUP_DIR}
 fi
 
 echo "clean apt cache..."
@@ -84,13 +85,21 @@ DATE=`date $DATESTRING`
 DEST=$BACKUP_DIR/$DATE
 LAST=`find $BACKUP_DIR -maxdepth 1 -mindepth 1 -type d  | sort | tail -1`
 
-echo "Last backup was $LAST"
+if [ "${LAST}" == "" ]; then
+    echo "First backup. Create dummy directory"
+    LAST=${BACKUP_DIR}/0000-00-00_00-00-00
+    mkdir ${LAST}
+    LAST_MONTH=""
+else
+    echo "Last backup was $LAST"
+
+    #get month prefixed with year of last backup
+    LAST_MONTH=`echo $LAST | egrep -o '[0-9]{4}\-[0-9]{2}'`
+fi
 
 #get current month prefixed with year
 MONTH=`echo $DATE | egrep -o '^[0-9]{4}\-[0-9]{2}'`
 
-#get month prefixed with year of last backup
-LAST_MONTH=`echo $LAST | egrep -o '[0-9]{4}\-[0-9]{2}'`
 
 echo "We are in month $MONTH. Last backup was in $LAST_MONTH."
 
@@ -100,6 +109,7 @@ else
     echo "First backup of month. Do thorough checksum comparison".
     RSYNC_OPTIONS="${RSYNC_OPTIONS} -c"
 fi
+
 
 LOGFILE="${DEST}.log"
 
@@ -115,16 +125,17 @@ for src_dir in ${SRC}; do
 
     $cmd
 
-    if test $? -ne 0; then
+    if [[ $? -ne 0 ]]; then
 	echo "Rsync failed ..."
 	exit 1
     fi
     echo ""
 done 
 
-
 echo "Print log..."
 tail ${LOGFILE}
+
+
 
 LOGTMP=/tmp/$(basename LOGFILE)
 echo "Copy log to ${LOGTMP}"
