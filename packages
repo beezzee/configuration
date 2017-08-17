@@ -15,7 +15,7 @@ rxvt-unicode
 zsh
 texlive-latex-base
 texlive-latex-extra
-
+meld
 
 #emacs IDE
 elpa-helm
