@@ -17,6 +17,9 @@ texlive-latex-base
 texlive-latex-extra
 meld
 
+#gdb front end
+nemiver
+
 #emacs IDE
 elpa-helm
 global
