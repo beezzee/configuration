@@ -24,3 +24,15 @@ nemiver
 elpa-helm
 global
 https://github.com/tuhdo/emacs-c-ide-demo.git
+
+
+#tex
+texstudio
+texlive-extra
+texlive-science
+
+
+#virtualbox guest extensions
+virtualbox-guest-dkms
+virtualbox-guest-utils
+virtualbox-guest-x11
