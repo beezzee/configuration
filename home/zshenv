@@ -1,0 +1,2 @@
+#copy pass passwords to X clipboard for mouse pasting
+export PASSWORD_STORE_X_SELECTION=primary
