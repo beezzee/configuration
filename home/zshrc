@@ -5,9 +5,15 @@ promptinit
 #prompt adam2
 PROMPT='%B%2~: %b'
 
-setopt histignorealldups sharehistory
+setopt histignorealldups
+#setopt sharehistory
 
 setopt COMPLETE_ALIASES
+
+setopt AUTO_PUSHD
+
+setopt AUTO_MENU
+
 
 # Use emacs keybindings even if our EDITOR is set to vi
 bindkey -e
