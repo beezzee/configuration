@@ -1,39 +1,58 @@
+######X desktop
+#window manager
 i3
+
+#login manager
 lightdm
+
+#monitor layout
 arandr
-emacs
-mupdf
+
+#######admin
+
 aptitude
+pm-utils
+rxvt-unicode
+zsh
+
+###### development
 git
 gitk
 git-gui
 build-essential
 python3
 python3-serial
-pm-utils
-rxvt-unicode
-zsh
-texlive-latex-base
-texlive-latex-extra
+
+#diff tool
 meld
 
-######utils
-#managing passwords based on GPG
-pass
+#### emacs IDE
+emacs
+elpa-helm
+global
+https://github.com/tuhdo/emacs-c-ide-demo.git
 
 #gdb front end
 nemiver
 
-#emacs IDE
-elpa-helm
-global
-https://github.com/tuhdo/emacs-c-ide-demo.git
+
+
+
+###### utils
+#managing passwords based on GPG
+pass
+
+mupdf
+
+
 
 
 #tex
 texstudio
 texlive-extra
 texlive-science
+texlive-latex-base
+texlive-latex-extra
 
 
 #virtualbox guest extensions
