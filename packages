@@ -17,6 +17,10 @@ texlive-latex-base
 texlive-latex-extra
 meld
 
+######utils
+#managing passwords based on GPG
+pass
+
 #gdb front end
 nemiver
 
@@ -36,3 +40,4 @@ texlive-science
 virtualbox-guest-dkms
 virtualbox-guest-utils
 virtualbox-guest-x11
+
