@@ -165,3 +165,5 @@ bindsym $mod+F1 exec --no-startup-id i3lock
 #bindsym $mod+F1 exec --no-startup-id xscreensaver-command -lock 
 bindsym $mod+g exec --no-startup-id setxkbmap de nodeadkeys
 bindsym $mod+u exec --no-startup-id setxkbmap us
+
+exec --no-startup-id gpg-agent --homedir $HOME/.gnupg --use-standard-socket --daemon
