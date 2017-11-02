@@ -151,7 +151,9 @@ bindsym $mod+n exec i3-input -F 'rename workspace to %s' -P 'Enter new workspace
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+    mode hide
+    hidden_state hide
+    status_command i3status
 }
 
 workspace_auto_back_and_forth yes
@@ -167,3 +169,6 @@ bindsym $mod+g exec --no-startup-id setxkbmap de nodeadkeys
 bindsym $mod+u exec --no-startup-id setxkbmap us
 
 exec --no-startup-id gpg-agent --homedir $HOME/.gnupg --use-standard-socket --daemon
+
+exec --no-startup-id i3-msg 'workspace 0:admin; exec urxvt'
+exec --no-startup-id i3-msg 'workspace 1:web; exec iceweasel'
