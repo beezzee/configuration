@@ -104,8 +104,10 @@ MONTH=`echo $DATE | egrep -o '^[0-9]{4}\-[0-9]{2}'`
 echo "We are in month $MONTH. Last backup was in $LAST_MONTH."
 
 if [ "$MONTH" == "$LAST_MONTH" ]; then
+    first_backup_month=0
     echo "Not first backup of month. Do fast comparision"
 else
+    first_backup_month=1
     echo "First backup of month. Do thorough checksum comparison".
     RSYNC_OPTIONS="${RSYNC_OPTIONS} -c"
 fi
@@ -142,7 +144,13 @@ echo "Copy log to ${LOGTMP}"
 cp ${LOGFILE} ${LOGTMP}
 
 echo "Compute backup statistics..."
-du -sh $BACKUP_DIR/*
+if [[ ${first_backup_month} -eq 1 ]]; then
+    du -sh $BACKUP_DIR/*
+else
+#    du -sh $BACKUP_DIR/*
+    du -sh $DEST
+fi
+
 df -h | grep ${MNT_DIR}
 
 if [[ ${DO_UMOUNT} -eq 1 ]]; then

@@ -60,3 +60,12 @@ virtualbox-guest-dkms
 virtualbox-guest-utils
 virtualbox-guest-x11
 
+#Upnp av
+#server
+minidlna
+
+#renderer
+gmediarender
+
+#controller 
+gupnp-av-cp from gupnp-tools

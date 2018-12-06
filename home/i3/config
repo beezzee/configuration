@@ -172,3 +172,6 @@ exec --no-startup-id gpg-agent --homedir $HOME/.gnupg --use-standard-socket --da
 
 exec --no-startup-id i3-msg 'workspace 0:admin; exec urxvt'
 exec --no-startup-id i3-msg 'workspace 1:web; exec iceweasel'
+exec --no-startup-id i3-msg 'workspace 1:web; exec evolution'
+
+exec --no-startup-id xscreensaver 
