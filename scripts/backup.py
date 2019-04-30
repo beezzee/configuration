@@ -102,10 +102,14 @@ def compile_rsync_command(src,dest,target_fst,dry_run=True,logfile=None,link_des
     rsync_filters = []
     #['--exclude=lost+found', '--exclude=.cache/']
 
-    rsync_options = ["--archive","--delete","--ignore-existing","--hard-links","--sparse"]
+    rsync_options = ["--delete","--ignore-existing","--hard-links","--sparse"]
 
     if target_fst == "NTFS":
-        rsync_options += [" --no-perms", "--no-owner", "--no-group"]
+        rsync_options += ["--no-perms", "--no-owner", "--no-group"]
+        #emulate --archive, but without --times --perms --ownder --group
+        rsync_options += ['-rlD']
+    else:
+        rsync_options += ["--archive"]
 
 
     for o in rsync_options+rsync_filters:
@@ -224,7 +228,9 @@ if __name__ == "__main__":
     else:
         link_dest = None
  
-    tmpdest = tempfile.mkdtemp(dir=destbase)
+    #tmpdest = tempfile.mkdtemp(dir=destbase)
+    tmpdest = os.path.join(destbase , 'tmpdir')
+    os.mkdir(tmpdest)
 
     logger.info(f"Temporary backup destination {tmpdest}")
 
@@ -240,7 +246,20 @@ if __name__ == "__main__":
             src_dir_normalized = os.path.normpath(src_dir) 
             #src_dir_unified = unify_path(src_dir_normalized)
 
-            cmd=compile_backup_command(target_fst=args.target_fst,dry_run=args.dry_run,logfile=logfile,src=src_dir_normalized,dest=tmpdest,link_dest=link_dest)
+            src_head,src_tail = os.path.split(src_dir_normalized)
+            if src_tail == '':
+                #if there was a trailing slash in the path name
+                src_head,src_tail = os.path.split(src_head)
+            
+
+            dest = tmpdest
+            src = os.path.join(src_head,src_tail)
+            if link_dest is None:
+                link_dest_dir = None
+            else:
+                link_dest_dir = os.path.join(link_dest,src_tail)
+
+            cmd=compile_backup_command(target_fst=args.target_fst,dry_run=args.dry_run,logfile=logfile,src=src,dest=dest,link_dest=link_dest_dir)
 
             if errors>0:
                 logger.info("Skip rsync because errors happened.")
@@ -268,7 +287,7 @@ if __name__ == "__main__":
     else:
         logger.info(f"Remove temporary directory {tmpdest}")
         try:
-            shutil.rmtree(tmpdest)
+            shutil.rmtree(tmpdest)            
         except:
             logger.error(f"Error during removal of {tmpdest}. Remove manually.")
         
