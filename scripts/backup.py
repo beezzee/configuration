@@ -97,7 +97,7 @@ def execute_system_command(cmd):
     return completed_process
     
 
-def compile_rsync_command(src,dest,target_fst,dry_run=True,logfile=None,link_dest=None):
+def compile_rsync_command(src,dest,target_fst,dry_run=True,logfile=None,link_dest=None,thorough_check=False):
     cmd=["rsync"]
     rsync_filters = []
     #['--exclude=lost+found', '--exclude=.cache/']
@@ -120,6 +120,9 @@ def compile_rsync_command(src,dest,target_fst,dry_run=True,logfile=None,link_des
     if link_dest is not None:
         cmd+= ["--link-dest=" + link_dest ]
 
+    if thorough_check:
+        cmd += ["--checksum"]
+
     cmd+= [src_dir_normalized]
 
     #second positional argument of rsycn: dest
@@ -127,7 +130,7 @@ def compile_rsync_command(src,dest,target_fst,dry_run=True,logfile=None,link_des
     cmd+= [dest]
     return cmd
 
-def compile_hardlink_command(src,dest,target_fst,dry_run=True,logfile=None,link_dest=None):
+def compile_hardlink_command(src,dest,target_fst,dry_run=True,logfile=None,link_dest=None,thorough_check=False):
     cmd =[]
 
     if dry_run:
@@ -240,7 +243,7 @@ if __name__ == "__main__":
             src_dir_normalized = os.path.normpath(src_dir) 
             #src_dir_unified = unify_path(src_dir_normalized)
 
-            cmd=compile_backup_command(target_fst=args.target_fst,dry_run=args.dry_run,logfile=logfile,src=src_dir_normalized,dest=tmpdest,link_dest=link_dest)
+            cmd=compile_backup_command(target_fst=args.target_fst,dry_run=args.dry_run,logfile=logfile,src=src_dir_normalized,dest=tmpdest,link_dest=link_dest,thorough_check=first_backup_of_month)
 
             if errors>0:
                 logger.info("Skip rsync because errors happened.")
