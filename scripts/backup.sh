@@ -145,7 +145,7 @@ cp ${LOGFILE} ${LOGTMP}
 
 echo "Compute backup statistics..."
 if [[ ${first_backup_month} -eq 1 ]]; then
-    du -sh $BACKUP_DIR/*
+    du -sh $DEST
 else
 #    du -sh $BACKUP_DIR/*
     du -sh $DEST
